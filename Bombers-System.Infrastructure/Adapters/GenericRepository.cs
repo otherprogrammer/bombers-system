@@ -1,0 +1,45 @@
+﻿using Bombers_System.Domain.Ports;
+using Bombers_System.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
+namespace Bombers_System.Infrastructure.Adapters;
+
+public class GenericRepository<T> : IGenericRepository<T> where T : class
+{
+    private readonly ApplicationDbContext _context;
+    
+    public GenericRepository(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync()
+    {
+        return await _context.Set<T>().AsNoTracking().ToListAsync();
+    }
+    
+    public async Task<T?> GetByIdAsync(int id)
+    {
+        return await _context.Set<T>().FindAsync(id);
+    }
+
+    public async Task AddAsync(T entity)
+    {
+        await _context.Set<T>().AddAsync(entity);
+    }
+
+    public Task Update(T entity)
+    {
+        _context.Set<T>().Update(entity);
+        return Task.CompletedTask;
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var entity = await _context.Set<T>().FindAsync(id);
+        if (entity != null)
+        {
+            _context.Set<T>().Remove(entity);
+        }
+    }
+}
