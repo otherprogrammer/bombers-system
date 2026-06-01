@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using NetTopologySuite.Geometries;
+
+namespace Bombers_System.Infrastructure.Persistence.Models;
+
+public partial class Station
+{
+    public int StationId { get; set; }
+
+    public int StationNumber { get; set; }
+
+    public string Address { get; set; } = null!;
+
+    public Geometry? CoverageZonePolygon { get; set; }
+
+    public int VehicleCapacity { get; set; }
+
+    public virtual ICollection<FirefighterPersonnel> FirefighterPersonnel { get; set; } = new List<FirefighterPersonnel>();
+
+    public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+}

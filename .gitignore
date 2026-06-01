@@ -1,0 +1,26 @@
+## Visual Studio / Rider - Compilation files and binaries
+[Dd]ebug/
+[Dd]ebugPS/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+## NuGet package restore files
+project.lock.json
+project.assets.json
+*.nuget.g.props
+*.nuget.g.targets
+
+## Rider / IntelliJ local settings
+.idea/
+*.sln.iml
+
+## Temporary user and OS files
+*.user
+*.userosscache
+*.suo
+Thumbs.db
+.DS_Store
