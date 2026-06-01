@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Bombers_System.Application.Configuration;
 using Bombers_System.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,9 @@ public static class ServiceRegistrationExtensions
     {
         // Register Infrastructure Services
         services.AddInfrastructureServices(configuration);
+        
+        // Register Application Services
+        services.AddApplicationServices();
         
         // Enable Controllers
         services.AddControllers();
@@ -37,7 +41,7 @@ public static class ServiceRegistrationExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Bombers Systema API", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Bombers System API", Version = "v1" });
 
             // Security Scheme
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

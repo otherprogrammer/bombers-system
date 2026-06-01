@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Bombers-System.Application\Bombers-System.Application.csproj" />
       <ProjectReference Include="..\Bombers-System.Infrastructure\Bombers-System.Infrastructure.csproj" />
     </ItemGroup>
 
