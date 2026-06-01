@@ -1,0 +1,12 @@
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\bin\Debug\net8.0\Bombers-System.Domain.deps.json
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\bin\Debug\net8.0\Bombers-System.Domain.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\bin\Debug\net8.0\Bombers-System.Domain.pdb
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.csproj.AssemblyReference.cache
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.AssemblyInfoInputs.cache
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.AssemblyInfo.cs
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.csproj.CoreCompileInputs.cache
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\refint\Bombers-System.Domain.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\Bombers-System.Domain.pdb
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Domain\obj\Debug\net8.0\ref\Bombers-System.Domain.dll
