@@ -2,5 +2,7 @@
 
 public interface IUnitOfWork
 {
-    Task<int> SaveChangesAsync();
+    IStationRepository Stations { get; }
+    IVehicleRepository Vehicles { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

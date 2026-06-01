@@ -1,5 +1,5 @@
 ﻿using Bombers_System.Domain.DTOs.Vehicle;
-using Bombers_System.Domain.Interfaces;
+using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.VehicleUseCases.Commands;
@@ -13,16 +13,16 @@ public class UpdateVehicleCommand : IRequest<VehicleDto?>
 
 internal sealed class UpdateVehicleCommandHandler : IRequestHandler<UpdateVehicleCommand, VehicleDto?>
 {
-    private readonly IVehicleRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateVehicleCommandHandler(IVehicleRepository repository)
+    public UpdateVehicleCommandHandler(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<VehicleDto?> Handle(UpdateVehicleCommand request, CancellationToken cancellationToken)
     {
-        var vehicle = await _repository.GetByIdAsync(request.VehicleId, cancellationToken);
+        var vehicle = await _unitOfWork.Vehicles.GetByIdAsync(request.VehicleId, cancellationToken);
         if (vehicle is null) return null;
 
         vehicle.StationId = request.Dto.StationId;
@@ -32,8 +32,8 @@ internal sealed class UpdateVehicleCommandHandler : IRequestHandler<UpdateVehicl
         vehicle.VehicleType = request.Dto.VehicleType;
         vehicle.OperationalStatus = request.Dto.OperationalStatus;
 
-        _repository.Update(vehicle);
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.Vehicles.UpdateAsync(vehicle);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new VehicleDto
         {

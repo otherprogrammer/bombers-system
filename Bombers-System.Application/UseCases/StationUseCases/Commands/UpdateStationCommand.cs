@@ -1,5 +1,5 @@
 ﻿using Bombers_System.Domain.DTOs.Station;
-using Bombers_System.Domain.Interfaces;
+using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.StationUseCases.Commands;
@@ -13,24 +13,24 @@ public class UpdateStationCommand : IRequest<StationDto?>
 
 internal sealed class UpdateStationCommandHandler : IRequestHandler<UpdateStationCommand, StationDto?>
 {
-    private readonly IStationRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateStationCommandHandler(IStationRepository repository)
+    public UpdateStationCommandHandler(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<StationDto?> Handle(UpdateStationCommand request, CancellationToken cancellationToken)
     {
-        var station = await _repository.GetByIdAsync(request.StationId, cancellationToken);
+        var station = await _unitOfWork.Stations.GetByIdAsync(request.StationId, cancellationToken);
         if (station is null) return null;
 
         station.StationNumber = request.Dto.StationNumber;
         station.Address = request.Dto.Address;
         station.VehicleCapacity = request.Dto.VehicleCapacity;
 
-        _repository.Update(station);
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.Stations.UpdateAsync(station);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new StationDto
         {

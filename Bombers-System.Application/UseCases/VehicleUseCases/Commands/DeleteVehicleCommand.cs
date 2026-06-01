@@ -1,4 +1,4 @@
-﻿using Bombers_System.Domain.Interfaces;
+﻿using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.VehicleUseCases.Commands;
@@ -11,20 +11,20 @@ public class DeleteVehicleCommand : IRequest<bool>
 
 internal sealed class DeleteVehicleCommandHandler : IRequestHandler<DeleteVehicleCommand, bool>
 {
-    private readonly IVehicleRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteVehicleCommandHandler(IVehicleRepository repository)
+    public DeleteVehicleCommandHandler(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<bool> Handle(DeleteVehicleCommand request, CancellationToken cancellationToken)
     {
-        var vehicle = await _repository.GetByIdAsync(request.VehicleId, cancellationToken);
+        var vehicle = await _unitOfWork.Vehicles.GetByIdAsync(request.VehicleId, cancellationToken);
         if (vehicle is null) return false;
 
-        _repository.Delete(vehicle);
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.Vehicles.DeleteAsync(vehicle);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

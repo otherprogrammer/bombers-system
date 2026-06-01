@@ -1,5 +1,5 @@
 ﻿using Bombers_System.Domain.DTOs.Station;
-using Bombers_System.Domain.Interfaces;
+using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.StationUseCases.Queries;

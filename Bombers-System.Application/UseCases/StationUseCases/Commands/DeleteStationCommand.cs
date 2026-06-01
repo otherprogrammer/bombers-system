@@ -1,4 +1,4 @@
-﻿using Bombers_System.Domain.Interfaces;
+﻿using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.StationUseCases.Commands;
@@ -11,20 +11,20 @@ public class DeleteStationCommand : IRequest<bool>
 
 internal sealed class DeleteStationCommandHandler : IRequestHandler<DeleteStationCommand, bool>
 {
-    private readonly IStationRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteStationCommandHandler(IStationRepository repository)
+    public DeleteStationCommandHandler(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<bool> Handle(DeleteStationCommand request, CancellationToken cancellationToken)
     {
-        var station = await _repository.GetByIdAsync(request.StationId, cancellationToken);
+        var station = await _unitOfWork.Stations.GetByIdAsync(request.StationId, cancellationToken);
         if (station is null) return false;
 
-        _repository.Delete(station);
-        await _repository.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.Stations.DeleteAsync(station);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

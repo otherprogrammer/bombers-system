@@ -13,33 +13,39 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _context.Set<T>().AsNoTracking().ToListAsync();
+        return await _context.Set<T>().AsNoTracking().ToListAsync(cancellationToken);
     }
     
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await _context.Set<T>().FindAsync(id);
+        return await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(T entity, CancellationToken cancellationToken)
     {
-        await _context.Set<T>().AddAsync(entity);
+        await _context.Set<T>().AddAsync(entity, cancellationToken);
     }
 
-    public Task Update(T entity)
+    public Task UpdateAsync(T entity)
     {
         _context.Set<T>().Update(entity);
         return Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        var entity = await _context.Set<T>().FindAsync(id);
+        var entity = await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
         if (entity != null)
         {
             _context.Set<T>().Remove(entity);
         }
+    }
+    
+    public Task DeleteAsync(T entity)
+    {
+        _context.Set<T>().Remove(entity);
+        return Task.CompletedTask;
     }
 }
