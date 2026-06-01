@@ -1,0 +1,15 @@
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\bin\Debug\net8.0\Bombers-System.Application.deps.json
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\bin\Debug\net8.0\Bombers-System.Application.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\bin\Debug\net8.0\Bombers-System.Application.pdb
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\bin\Debug\net8.0\Bombers-System.Domain.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\bin\Debug\net8.0\Bombers-System.Domain.pdb
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.csproj.AssemblyReference.cache
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.AssemblyInfoInputs.cache
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.AssemblyInfo.cs
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.csproj.CoreCompileInputs.cache
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-.1B96FB12.Up2Date
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\refint\Bombers-System.Application.dll
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\Bombers-System.Application.pdb
+C:\Users\User\Downloads\bombers-system-develop\bombers-system-develop\Bombers-System.Application\obj\Debug\net8.0\ref\Bombers-System.Application.dll

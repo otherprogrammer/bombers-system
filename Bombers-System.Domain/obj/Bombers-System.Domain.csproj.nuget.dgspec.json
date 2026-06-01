@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Rider\\RiderProjects\\Bombers-System\\Bombers-System.Domain\\Bombers-System.Domain.csproj": {}
+    "C:\\Users\\User\\Downloads\\bombers-system-develop\\bombers-system-develop\\Bombers-System.Domain\\Bombers-System.Domain.csproj": {}
   },
   "projects": {
-    "D:\\Rider\\RiderProjects\\Bombers-System\\Bombers-System.Domain\\Bombers-System.Domain.csproj": {
+    "C:\\Users\\User\\Downloads\\bombers-system-develop\\bombers-system-develop\\Bombers-System.Domain\\Bombers-System.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Rider\\RiderProjects\\Bombers-System\\Bombers-System.Domain\\Bombers-System.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Downloads\\bombers-system-develop\\bombers-system-develop\\Bombers-System.Domain\\Bombers-System.Domain.csproj",
         "projectName": "Bombers-System.Domain",
-        "projectPath": "D:\\Rider\\RiderProjects\\Bombers-System\\Bombers-System.Domain\\Bombers-System.Domain.csproj",
-        "packagesPath": "C:\\Users\\matti\\.nuget\\packages\\",
-        "outputPath": "D:\\Rider\\RiderProjects\\Bombers-System\\Bombers-System.Domain\\obj\\",
+        "projectPath": "C:\\Users\\User\\Downloads\\bombers-system-develop\\bombers-system-develop\\Bombers-System.Domain\\Bombers-System.Domain.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\Downloads\\bombers-system-develop\\bombers-system-develop\\Bombers-System.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\matti\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,11 +32,23 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "NetTopologySuite": {
+              "target": "Package",
+              "version": "[2.6.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -48,12 +60,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.127/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
