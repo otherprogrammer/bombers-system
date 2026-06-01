@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Bombers_System.Infrastructure.Persistence.Models;
+﻿namespace Bombers_System.Domain.Entities;
 
 public partial class OperationalDispatch
 {

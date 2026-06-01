@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Bombers_System.Domain.Entities;
 
-namespace Bombers_System.Infrastructure.Persistence.Models;
+namespace Bombers_System.Infrastructure.Persistence;
 
 public partial class ApplicationDbContext : DbContext
 {

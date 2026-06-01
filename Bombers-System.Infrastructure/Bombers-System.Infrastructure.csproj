@@ -20,4 +20,8 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="8.0.11" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Bombers-System.Domain\Bombers-System.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
