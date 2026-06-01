@@ -21,8 +21,8 @@ public static class InfrastructureServiceExtensions
         
         // Services Register
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        // services.AddScoped<IUserRepository, UserRepository>();
-        // services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IStationRepository, StationRepository>();
+        services.AddScoped<IVehicleRepository, VehicleRepository>();
         
         return services;
     }
