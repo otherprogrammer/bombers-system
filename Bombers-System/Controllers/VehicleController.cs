@@ -8,11 +8,11 @@ namespace Bombers_System.Controllers;
 
 [ApiController]
 [Route("api/vehicles")]
-public class VehiclesController : ControllerBase
+public class VehicleController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public VehiclesController(IMediator mediator)
+    public VehicleController(IMediator mediator)
     {
         _mediator = mediator;
     }
