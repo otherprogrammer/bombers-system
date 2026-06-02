@@ -16,7 +16,8 @@ public static class InfrastructureServiceExtensions
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+                x => x.UseNetTopologySuite());
         });
         
         // Services Register
