@@ -26,6 +26,7 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IVehicleRepository, VehicleRepository>();
         
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+        services.AddSingleton<IJwtProvider, JwtProvider>();
         
         return services;
     }
