@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Bombers_System.Domain.Ports;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +45,11 @@ public class JwtProvider : IJwtProvider
 
     public string GenerateRefreshToken()
     {
-        throw new NotImplementedException();
+        var randomNumber = new byte[64];
+        
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        
+        return Convert.ToBase64String(randomNumber);
     }
 }
