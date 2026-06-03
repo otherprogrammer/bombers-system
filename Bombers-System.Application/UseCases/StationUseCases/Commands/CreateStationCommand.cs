@@ -7,7 +7,7 @@ namespace Bombers_System.Application.UseCases.StationUseCases.Commands;
 
 public class CreateStationCommand : IRequest<StationDto>
 {
-    public CreateStationDto Dto { get; set; } = null!;
+    public CreateStationDto Dto { get; set; } 
     public CreateStationCommand(CreateStationDto dto) => Dto = dto;
 }
 
@@ -24,7 +24,6 @@ internal sealed class CreateStationCommandHandler : IRequestHandler<CreateStatio
     {
         var station = new Station
         {
-            StationId = request.Dto.StationId,
             StationNumber = request.Dto.StationNumber,
             Address = request.Dto.Address,
             VehicleCapacity = request.Dto.VehicleCapacity

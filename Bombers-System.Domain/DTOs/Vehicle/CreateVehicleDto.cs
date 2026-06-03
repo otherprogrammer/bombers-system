@@ -2,7 +2,6 @@ namespace Bombers_System.Domain.DTOs.Vehicle;
 
 public class CreateVehicleDto
 {
-    public int VehicleId { get; set; }
     public int StationId { get; set; }
     public int WaterLevelGallons { get; set; }
     public DateOnly LastMaintenanceDate { get; set; }

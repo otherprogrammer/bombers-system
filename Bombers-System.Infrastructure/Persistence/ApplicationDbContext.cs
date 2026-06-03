@@ -70,7 +70,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("cad_incidents");
 
             entity.Property(e => e.IncidentId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("incident_id");
             entity.Property(e => e.Call911Time).HasColumnName("call_911_time");
             entity.Property(e => e.EmergencyType)
@@ -91,7 +91,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("dispatch_crews");
 
             entity.Property(e => e.CrewId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("crew_id");
             entity.Property(e => e.DispatchId).HasColumnName("dispatch_id");
             entity.Property(e => e.FirefighterId).HasColumnName("firefighter_id");
@@ -117,7 +117,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("duty_shifts");
 
             entity.Property(e => e.ShiftId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("shift_id");
             entity.Property(e => e.EndDate).HasColumnName("end_date");
             entity.Property(e => e.FirefighterId).HasColumnName("firefighter_id");
@@ -142,7 +142,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("firefighter_personnel");
 
             entity.Property(e => e.FirefighterId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("firefighter_id");
             entity.Property(e => e.CurrentStatus)
                 .HasMaxLength(255)
@@ -172,7 +172,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("operational_dispatches");
 
             entity.Property(e => e.DispatchId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("dispatch_id");
             entity.Property(e => e.IncidentId).HasColumnName("incident_id");
             entity.Property(e => e.SceneArrivalTime).HasColumnName("scene_arrival_time");
@@ -198,7 +198,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("post_incident_reports");
 
             entity.Property(e => e.ReportId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("report_id");
             entity.Property(e => e.IncidentId).HasColumnName("incident_id");
             entity.Property(e => e.InjuriesReported).HasColumnName("injuries_reported");
@@ -225,7 +225,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("ppe_equipments");
 
             entity.Property(e => e.EquipmentId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("equipment_id");
             entity.Property(e => e.DecontaminationStatus).HasColumnName("decontamination_status");
             entity.Property(e => e.ExpirationDate).HasColumnName("expiration_date");
@@ -264,7 +264,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("stations");
 
             entity.Property(e => e.StationId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("station_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
@@ -358,7 +358,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("vehicles");
 
             entity.Property(e => e.VehicleId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("vehicle_id");
             entity.Property(e => e.LastMaintenanceDate).HasColumnName("last_maintenance_date");
             entity.Property(e => e.OperationalStatus)
