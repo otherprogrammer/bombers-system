@@ -23,4 +23,10 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default)
+    {
+        return await _context.Users
+            .AnyAsync(u => u.Username == username, cancellationToken);
+    }
 }
