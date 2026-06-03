@@ -15,4 +15,8 @@
       <ProjectReference Include="..\Bombers-System.Domain\Bombers-System.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UseCases\AuthUseCases\Queries\" />
+    </ItemGroup>
+
 </Project>
