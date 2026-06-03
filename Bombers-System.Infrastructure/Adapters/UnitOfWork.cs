@@ -10,19 +10,21 @@ public class UnitOfWork : IUnitOfWork
     public IVehicleRepository Vehicles { get; }
     public IUserRepository Users { get; }
     public IRoleRepository Roles { get; }
+    public IFirefighterRepository Firefighters { get; }
     
     public UnitOfWork(ApplicationDbContext context,
         IStationRepository stationRepository,
         IVehicleRepository vehicleRepository,
         IUserRepository userRepository,
-        IRoleRepository roleRepository)
+        IRoleRepository roleRepository, 
+        IFirefighterRepository firefighterRepository)
     {
         _context = context;
         Stations = stationRepository;
         Vehicles = vehicleRepository;
         Users = userRepository;
         Roles = roleRepository;
-
+        Firefighters = firefighterRepository;
     }
     
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

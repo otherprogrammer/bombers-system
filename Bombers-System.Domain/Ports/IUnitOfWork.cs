@@ -6,5 +6,6 @@ public interface IUnitOfWork
     IVehicleRepository Vehicles { get; }
     IUserRepository Users { get; }
     IRoleRepository Roles { get; }
+    IFirefighterRepository Firefighters { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

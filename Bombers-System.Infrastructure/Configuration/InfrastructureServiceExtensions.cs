@@ -26,6 +26,7 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IVehicleRepository, VehicleRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IFirefighterRepository, FirefighterRepository>();
         
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         services.AddSingleton<IJwtProvider, JwtProvider>();
