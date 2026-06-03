@@ -8,13 +8,11 @@ public partial class OperationalDispatch
 
     public int VehicleId { get; set; }
 
-    public DateTime StationAlertTime { get; set; }
+    public DateTime? StationAlertTime { get; set; }
 
     public DateTime VehicleDepartureTime { get; set; }
 
-    public DateTime SceneArrivalTime { get; set; }
-
-    public virtual ICollection<CadIncident> CadIncidents { get; set; } = new List<CadIncident>();
+    public DateTime? SceneArrivalTime { get; set; }
 
     public virtual ICollection<DispatchCrew> DispatchCrews { get; set; } = new List<DispatchCrew>();
 
