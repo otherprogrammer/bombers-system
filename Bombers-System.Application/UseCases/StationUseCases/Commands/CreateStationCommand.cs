@@ -1,4 +1,4 @@
-using Bombers_System.Domain.DTOs.Station;
+﻿using Bombers_System.Domain.DTOs.Station;
 using Bombers_System.Domain.Entities;
 using Bombers_System.Domain.Ports;
 using MediatR;
@@ -7,7 +7,7 @@ namespace Bombers_System.Application.UseCases.StationUseCases.Commands;
 
 public class CreateStationCommand : IRequest<StationDto>
 {
-    public CreateStationDto Dto { get; set; } = null!;
+    public CreateStationDto Dto { get; set; } 
     public CreateStationCommand(CreateStationDto dto) => Dto = dto;
 }
 
@@ -17,7 +17,7 @@ internal sealed class CreateStationCommandHandler : IRequestHandler<CreateStatio
 
     public CreateStationCommandHandler(IUnitOfWork unitOfWork)
     {
-        _unitOfWork = unitOfWork;
+        _unitOfWork  = unitOfWork;
     }
 
     public async Task<StationDto> Handle(CreateStationCommand request, CancellationToken cancellationToken)

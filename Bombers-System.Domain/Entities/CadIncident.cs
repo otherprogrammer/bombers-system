@@ -6,8 +6,6 @@ public partial class CadIncident
 {
     public int IncidentId { get; set; }
 
-    public int DispatchId { get; set; }
-
     public string IncidentCode { get; set; } = null!;
 
     public string EmergencyType { get; set; } = null!;
@@ -19,8 +17,6 @@ public partial class CadIncident
     public DateTime Call911Time { get; set; }
 
     public DateTime? IncidentClosureTime { get; set; }
-
-    public virtual OperationalDispatch Dispatch { get; set; } = null!;
 
     public virtual ICollection<OperationalDispatch> OperationalDispatches { get; set; } = new List<OperationalDispatch>();
 

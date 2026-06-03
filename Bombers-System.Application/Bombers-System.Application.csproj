@@ -11,4 +11,12 @@
       <PackageReference Include="MediatR" Version="14.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Bombers-System.Domain\Bombers-System.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UseCases\AuthUseCases\Queries\" />
+    </ItemGroup>
+
 </Project>

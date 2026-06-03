@@ -1,4 +1,4 @@
-using Bombers_System.Domain.DTOs.Vehicle;
+﻿using Bombers_System.Domain.DTOs.Vehicle;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
@@ -12,16 +12,16 @@ public class GetVehiclesByStationQuery : IRequest<IEnumerable<VehicleDto>>
 
 internal sealed class GetVehiclesByStationQueryHandler : IRequestHandler<GetVehiclesByStationQuery, IEnumerable<VehicleDto>>
 {
-    private readonly IVehicleRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetVehiclesByStationQueryHandler(IVehicleRepository repository)
+    public GetVehiclesByStationQueryHandler(IUnitOfWork unitOfWork)
     {
-        _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<IEnumerable<VehicleDto>> Handle(GetVehiclesByStationQuery request, CancellationToken cancellationToken)
     {
-        var vehicles = await _repository.GetByStationIdAsync(request.StationId, cancellationToken);
+        var vehicles = await _unitOfWork.Vehicles.GetByStationIdAsync(request.StationId, cancellationToken);
         return vehicles.Select(v => new VehicleDto
         {
             VehicleId = v.VehicleId,

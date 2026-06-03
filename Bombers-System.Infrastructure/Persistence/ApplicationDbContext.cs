@@ -30,15 +30,18 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<PpeEquipment> PpeEquipments { get; set; }
 
+    public virtual DbSet<Role> Roles { get; set; }
+
     public virtual DbSet<Station> Stations { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserRole> UserRoles { get; set; }
+
+    public virtual DbSet<UserToken> UserTokens { get; set; }
+
     public virtual DbSet<Vehicle> Vehicles { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        // Connection string is configured via appsettings.json
-    }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -62,43 +65,33 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<CadIncident>(entity =>
         {
-            entity.HasKey(e => e.IncidentId).HasName("cad_incident_pkey");
+            entity.HasKey(e => e.IncidentId).HasName("cad_incidents_pkey");
 
-            entity.ToTable("cad_incident");
+            entity.ToTable("cad_incidents");
 
             entity.Property(e => e.IncidentId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("incident_id");
-            entity.Property(e => e.Call911Time)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("call_911_time");
-            entity.Property(e => e.DispatchId).HasColumnName("dispatch_id");
+            entity.Property(e => e.Call911Time).HasColumnName("call_911_time");
             entity.Property(e => e.EmergencyType)
                 .HasMaxLength(255)
                 .HasColumnName("emergency_type");
             entity.Property(e => e.GpsCoordinates).HasColumnName("gps_coordinates");
-            entity.Property(e => e.IncidentClosureTime)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("incident_closure_time");
+            entity.Property(e => e.IncidentClosureTime).HasColumnName("incident_closure_time");
             entity.Property(e => e.IncidentCode)
                 .HasMaxLength(255)
                 .HasColumnName("incident_code");
             entity.Property(e => e.PriorityLevel).HasColumnName("priority_level");
-
-            entity.HasOne(d => d.Dispatch).WithMany(p => p.CadIncidents)
-                .HasForeignKey(d => d.DispatchId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_incident_dispatch");
         });
 
         modelBuilder.Entity<DispatchCrew>(entity =>
         {
-            entity.HasKey(e => e.CrewId).HasName("dispatch_crew_pkey");
+            entity.HasKey(e => e.CrewId).HasName("dispatch_crews_pkey");
 
-            entity.ToTable("dispatch_crew");
+            entity.ToTable("dispatch_crews");
 
             entity.Property(e => e.CrewId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("crew_id");
             entity.Property(e => e.DispatchId).HasColumnName("dispatch_id");
             entity.Property(e => e.FirefighterId).HasColumnName("firefighter_id");
@@ -124,19 +117,17 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("duty_shifts");
 
             entity.Property(e => e.ShiftId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("shift_id");
-            entity.Property(e => e.EndDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("end_date");
+            entity.Property(e => e.EndDate).HasColumnName("end_date");
             entity.Property(e => e.FirefighterId).HasColumnName("firefighter_id");
-            entity.Property(e => e.HoursWorked).HasColumnName("hours_worked");
+            entity.Property(e => e.HoursWorked)
+                .HasPrecision(5, 2)
+                .HasColumnName("hours_worked");
             entity.Property(e => e.RolAssigned)
                 .HasMaxLength(255)
                 .HasColumnName("rol_assigned");
-            entity.Property(e => e.StartDate)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("start_date");
+            entity.Property(e => e.StartDate).HasColumnName("start_date");
 
             entity.HasOne(d => d.Firefighter).WithMany(p => p.DutyShifts)
                 .HasForeignKey(d => d.FirefighterId)
@@ -151,7 +142,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("firefighter_personnel");
 
             entity.Property(e => e.FirefighterId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("firefighter_id");
             entity.Property(e => e.CurrentStatus)
                 .HasMaxLength(255)
@@ -176,23 +167,17 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<OperationalDispatch>(entity =>
         {
-            entity.HasKey(e => e.DispatchId).HasName("operational_dispatch_pkey");
+            entity.HasKey(e => e.DispatchId).HasName("operational_dispatches_pkey");
 
-            entity.ToTable("operational_dispatch");
+            entity.ToTable("operational_dispatches");
 
             entity.Property(e => e.DispatchId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("dispatch_id");
             entity.Property(e => e.IncidentId).HasColumnName("incident_id");
-            entity.Property(e => e.SceneArrivalTime)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("scene_arrival_time");
-            entity.Property(e => e.StationAlertTime)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("station_alert_time");
-            entity.Property(e => e.VehicleDepartureTime)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("vehicle_departure_time");
+            entity.Property(e => e.SceneArrivalTime).HasColumnName("scene_arrival_time");
+            entity.Property(e => e.StationAlertTime).HasColumnName("station_alert_time");
+            entity.Property(e => e.VehicleDepartureTime).HasColumnName("vehicle_departure_time");
             entity.Property(e => e.VehicleId).HasColumnName("vehicle_id");
 
             entity.HasOne(d => d.Incident).WithMany(p => p.OperationalDispatches)
@@ -208,19 +193,17 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<PostIncidentReport>(entity =>
         {
-            entity.HasKey(e => e.ReportId).HasName("post_incident_report_pkey");
+            entity.HasKey(e => e.ReportId).HasName("post_incident_reports_pkey");
 
-            entity.ToTable("post_incident_report");
+            entity.ToTable("post_incident_reports");
 
             entity.Property(e => e.ReportId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("report_id");
             entity.Property(e => e.IncidentId).HasColumnName("incident_id");
             entity.Property(e => e.InjuriesReported).HasColumnName("injuries_reported");
             entity.Property(e => e.OfficerInChargeId).HasColumnName("officer_in_charge_id");
-            entity.Property(e => e.StationReturnTime)
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("station_return_time");
+            entity.Property(e => e.StationReturnTime).HasColumnName("station_return_time");
             entity.Property(e => e.TacticalSummary).HasColumnName("tactical_summary");
             entity.Property(e => e.TotalWaterUsed).HasColumnName("total_water_used");
 
@@ -237,12 +220,12 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<PpeEquipment>(entity =>
         {
-            entity.HasKey(e => e.EquipmentId).HasName("ppe_equipment_pkey");
+            entity.HasKey(e => e.EquipmentId).HasName("ppe_equipments_pkey");
 
-            entity.ToTable("ppe_equipment");
+            entity.ToTable("ppe_equipments");
 
             entity.Property(e => e.EquipmentId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("equipment_id");
             entity.Property(e => e.DecontaminationStatus).HasColumnName("decontamination_status");
             entity.Property(e => e.ExpirationDate).HasColumnName("expiration_date");
@@ -258,6 +241,22 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("fk_ppe_firefighter");
         });
 
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.RoleId).HasName("roles_pkey");
+
+            entity.ToTable("roles");
+
+            entity.HasIndex(e => e.RoleName, "roles_role_name_key").IsUnique();
+
+            entity.Property(e => e.RoleId)
+                .ValueGeneratedNever()
+                .HasColumnName("role_id");
+            entity.Property(e => e.RoleName)
+                .HasMaxLength(255)
+                .HasColumnName("role_name");
+        });
+
         modelBuilder.Entity<Station>(entity =>
         {
             entity.HasKey(e => e.StationId).HasName("stations_pkey");
@@ -265,7 +264,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("stations");
 
             entity.Property(e => e.StationId)
-                .ValueGeneratedOnAdd()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("station_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
@@ -275,6 +274,83 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.VehicleCapacity).HasColumnName("vehicle_capacity");
         });
 
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("users_pkey");
+
+            entity.ToTable("users");
+
+            entity.HasIndex(e => e.FirefighterId, "users_firefighter_id_key").IsUnique();
+
+            entity.HasIndex(e => e.Username, "users_username_key").IsUnique();
+
+            entity.Property(e => e.UserId)
+                .ValueGeneratedNever()
+                .HasColumnName("user_id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("created_at");
+            entity.Property(e => e.FirefighterId).HasColumnName("firefighter_id");
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(255)
+                .HasColumnName("password_hash");
+            entity.Property(e => e.Username)
+                .HasMaxLength(255)
+                .HasColumnName("username");
+
+            entity.HasOne(d => d.Firefighter).WithOne(p => p.User)
+                .HasForeignKey<User>(d => d.FirefighterId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("fk_users_firefighter");
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.RoleId }).HasName("user_roles_pkey");
+
+            entity.ToTable("user_roles");
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.AssignedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("assigned_at");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("fk_userroles_role");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_userroles_user");
+        });
+
+        modelBuilder.Entity<UserToken>(entity =>
+        {
+            entity.HasKey(e => e.TokenId).HasName("user_tokens_pkey");
+
+            entity.ToTable("user_tokens");
+
+            entity.Property(e => e.TokenId)
+                .ValueGeneratedNever()
+                .HasColumnName("token_id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("created_at");
+            entity.Property(e => e.ExpiresAt).HasColumnName("expires_at");
+            entity.Property(e => e.IsRevoked)
+                .HasDefaultValue(false)
+                .HasColumnName("is_revoked");
+            entity.Property(e => e.TokenValue)
+                .HasMaxLength(512)
+                .HasColumnName("token_value");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserTokens)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_usertokens_user");
+        });
+
         modelBuilder.Entity<Vehicle>(entity =>
         {
             entity.HasKey(e => e.VehicleId).HasName("vehicles_pkey");
@@ -282,7 +358,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("vehicles");
 
             entity.Property(e => e.VehicleId)
-                .ValueGeneratedOnAdd()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("vehicle_id");
             entity.Property(e => e.LastMaintenanceDate).HasColumnName("last_maintenance_date");
             entity.Property(e => e.OperationalStatus)

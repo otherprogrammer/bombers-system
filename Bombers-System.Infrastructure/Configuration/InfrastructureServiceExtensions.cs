@@ -1,4 +1,4 @@
-using Bombers_System.Domain.Ports;
+﻿using Bombers_System.Domain.Ports;
 using Bombers_System.Infrastructure.Adapters;
 using Bombers_System.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -19,12 +19,18 @@ public static class InfrastructureServiceExtensions
                 configuration.GetConnectionString("DefaultConnection"),
                 x => x.UseNetTopologySuite());
         });
-
+        
         // Services Register
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IStationRepository, StationRepository>();
         services.AddScoped<IVehicleRepository, VehicleRepository>();
-
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IFirefighterRepository, FirefighterRepository>();
+        
+        services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+        services.AddSingleton<IJwtProvider, JwtProvider>();
+        
         return services;
     }
 }

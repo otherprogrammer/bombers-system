@@ -1,4 +1,4 @@
-using Bombers_System.Domain.DTOs.Vehicle;
+﻿using Bombers_System.Domain.DTOs.Vehicle;
 using Bombers_System.Domain.Entities;
 using Bombers_System.Domain.Ports;
 using MediatR;
@@ -7,7 +7,7 @@ namespace Bombers_System.Application.UseCases.VehicleUseCases.Commands;
 
 public class CreateVehicleCommand : IRequest<VehicleDto>
 {
-    public CreateVehicleDto Dto { get; set; } = null!;
+    public CreateVehicleDto Dto { get; set; }
     public CreateVehicleCommand(CreateVehicleDto dto) => Dto = dto;
 }
 

@@ -4,4 +4,5 @@ namespace Bombers_System.Domain.Ports;
 
 public interface IStationRepository : IGenericRepository<Station>
 {
+    
 }
