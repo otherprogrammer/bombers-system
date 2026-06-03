@@ -35,8 +35,9 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<Vehicle> Vehicles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=aws-1-us-east-1.pooler.supabase.com;Database=postgres;Username=postgres.layhndjrqrhzzbzrobif;Password=D8Qt8Wvsk5NS5kWQ;Port=5432;SSL Mode=Require;Trust Server Certificate=true;", x => x.UseNetTopologySuite());
+    {
+        // Connection string is configured via appsettings.json
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -259,12 +260,12 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Station>(entity =>
         {
-            entity.HasKey(e => e.StationId).HasName("station_pkey");
+            entity.HasKey(e => e.StationId).HasName("stations_pkey");
 
-            entity.ToTable("station");
+            entity.ToTable("stations");
 
             entity.Property(e => e.StationId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("station_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
@@ -281,7 +282,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("vehicles");
 
             entity.Property(e => e.VehicleId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("vehicle_id");
             entity.Property(e => e.LastMaintenanceDate).HasColumnName("last_maintenance_date");
             entity.Property(e => e.OperationalStatus)

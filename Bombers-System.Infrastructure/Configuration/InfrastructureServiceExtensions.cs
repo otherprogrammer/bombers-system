@@ -1,4 +1,6 @@
-﻿using Bombers_System.Infrastructure.Persistence;
+using Bombers_System.Domain.Ports;
+using Bombers_System.Infrastructure.Adapters;
+using Bombers_System.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +15,16 @@ public static class InfrastructureServiceExtensions
         // Database Connection
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            options.UseNpgsql(connectionString);
+            options.UseNpgsql(
+                configuration.GetConnectionString("DefaultConnection"),
+                x => x.UseNetTopologySuite());
         });
-        
+
         // Services Register
-        // services.AddScoped<IUnitOfWork, UnitOfWork>();
-        // services.AddScoped<IUserRepository, UserRepository>();
-        // services.AddScoped<IAuthService, AuthService>();
-        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IStationRepository, StationRepository>();
+        services.AddScoped<IVehicleRepository, VehicleRepository>();
+
         return services;
     }
 }
