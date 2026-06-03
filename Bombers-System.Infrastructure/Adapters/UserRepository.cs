@@ -29,4 +29,10 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await _context.Users
             .AnyAsync(u => u.Username == username, cancellationToken);
     }
+
+    public async Task<bool> ExistsByFirefighterIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Users
+            .AnyAsync(u => u.FirefighterId == id, cancellationToken);
+    }
 }

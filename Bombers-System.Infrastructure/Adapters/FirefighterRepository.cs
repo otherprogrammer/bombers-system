@@ -20,4 +20,10 @@ public class FirefighterRepository : GenericRepository<FirefighterPersonnel>, IF
             .Where(f => f.StationId == stationId)
             .ToListAsync(cancellationToken);
     }
+    
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.FirefighterPersonnel
+            .AnyAsync(fp => fp.FirefighterId == id, cancellationToken);
+    }
 }
