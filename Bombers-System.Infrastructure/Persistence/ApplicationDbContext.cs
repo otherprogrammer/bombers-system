@@ -38,6 +38,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
+    public virtual DbSet<UserToken> UserTokens { get; set; }
+
     public virtual DbSet<Vehicle> Vehicles { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -321,6 +323,32 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("fk_userroles_user");
+        });
+
+        modelBuilder.Entity<UserToken>(entity =>
+        {
+            entity.HasKey(e => e.TokenId).HasName("user_tokens_pkey");
+
+            entity.ToTable("user_tokens");
+
+            entity.Property(e => e.TokenId)
+                .ValueGeneratedNever()
+                .HasColumnName("token_id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now()")
+                .HasColumnName("created_at");
+            entity.Property(e => e.ExpiresAt).HasColumnName("expires_at");
+            entity.Property(e => e.IsRevoked)
+                .HasDefaultValue(false)
+                .HasColumnName("is_revoked");
+            entity.Property(e => e.TokenValue)
+                .HasMaxLength(512)
+                .HasColumnName("token_value");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserTokens)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_usertokens_user");
         });
 
         modelBuilder.Entity<Vehicle>(entity =>
