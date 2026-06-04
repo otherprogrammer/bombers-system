@@ -33,4 +33,11 @@ public class AuthController : ControllerBase
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout([FromBody] LogoutUserCommand command, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(command, cancellationToken);
+        return NoContent();
+    }
 }
