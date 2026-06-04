@@ -18,11 +18,18 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(command, cancellationToken));
+        var response = await _mediator.Send(command, cancellationToken);
+        return Created(string.Empty, response);
     }
         
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserCommand command, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(command, cancellationToken));
+    }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenCommand command, CancellationToken cancellationToken)
     {
         return Ok(await _mediator.Send(command, cancellationToken));
     }
