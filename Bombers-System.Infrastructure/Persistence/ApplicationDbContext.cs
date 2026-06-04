@@ -250,7 +250,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.RoleName, "roles_role_name_key").IsUnique();
 
             entity.Property(e => e.RoleId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("role_id");
             entity.Property(e => e.RoleName)
                 .HasMaxLength(255)
@@ -285,7 +285,7 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.Username, "users_username_key").IsUnique();
 
             entity.Property(e => e.UserId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("user_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")
@@ -332,7 +332,7 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("user_tokens");
 
             entity.Property(e => e.TokenId)
-                .ValueGeneratedNever()
+                .UseIdentityAlwaysColumn()
                 .HasColumnName("token_id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("now()")

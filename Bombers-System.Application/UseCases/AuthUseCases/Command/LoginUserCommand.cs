@@ -1,12 +1,15 @@
 ﻿using System.Security.Authentication;
+using Bombers_System.Domain.Entities;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.AuthUseCases.Command;
 
-public record LoginUserCommand(string Username, string Password) : IRequest<string?>;
+public record LoginResponse(string AccessToken, string RefreshToken);
 
-internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string?>
+public record LoginUserCommand(string Username, string Password) : IRequest<LoginResponse>;
+
+internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtProvider _jwtProvider;
@@ -19,7 +22,7 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<string?> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetByUsernameAsync(request.Username, cancellationToken);
         if (user == null) throw new InvalidCredentialException("Invalid username or password");
@@ -29,10 +32,24 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
         
         var roles = user.UserRoles.Select(ur => ur.Role.RoleName);
 
-        return _jwtProvider.GenerateToken(
+        var accessToken = _jwtProvider.GenerateToken(
             user.UserId.ToString(),
             user.Username,
-            roles
-        );
+            roles);
+
+        var refreshToken = _jwtProvider.GenerateRefreshToken();
+
+        var userToken = new UserToken()
+        {
+            UserId = user.UserId,
+            TokenValue = refreshToken,
+            ExpiresAt = DateTime.UtcNow.AddDays(15),
+            IsRevoked = false,
+        };
+        
+        await _unitOfWork.UserTokens.AddAsync(userToken, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
+        return new LoginResponse(accessToken, refreshToken);
     }
 }

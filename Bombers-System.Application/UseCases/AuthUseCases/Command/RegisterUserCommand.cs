@@ -5,9 +5,10 @@ using MediatR;
 
 namespace Bombers_System.Application.UseCases.AuthUseCases.Command;
 
-public record RegisterUserCommand(string Username, string Password, int? FirefighterId) : IRequest<RegisterUserResponse>;
 
 public record RegisterUserResponse(int UserId, string Username, int? FirefighterId);
+
+public record RegisterUserCommand(string Username, string Password, int? FirefighterId) : IRequest<RegisterUserResponse>;
 
 internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResponse>
 {
