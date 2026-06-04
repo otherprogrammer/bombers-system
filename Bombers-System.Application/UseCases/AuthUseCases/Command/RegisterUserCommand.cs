@@ -51,6 +51,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         };
         
         await _unitOfWork.Users.AddAsync(newUser, cancellationToken);
+        await _unitOfWork.Users.AssignRoleAsync(newUser, 3);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RegisterUserResponse(newUser.UserId, newUser.Username,  newUser.FirefighterId);

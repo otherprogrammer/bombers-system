@@ -35,4 +35,14 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await _context.Users
             .AnyAsync(u => u.FirefighterId == id, cancellationToken);
     }
+
+    public Task AssignRoleAsync(User user, int roleId)
+    {
+        user.UserRoles.Add(new UserRole
+        {
+            RoleId = roleId,
+            AssignedAt =  DateTime.UtcNow
+        });
+        return Task.CompletedTask;
+    }
 }
