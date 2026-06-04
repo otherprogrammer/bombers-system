@@ -18,5 +18,5 @@ public partial class PostIncidentReport
 
     public virtual CadIncident Incident { get; set; } = null!;
 
-    public virtual FirefighterPersonnel OfficerInCharge { get; set; } = null!;
+    public virtual Firefighter OfficerInCharge { get; set; } = null!;
 }

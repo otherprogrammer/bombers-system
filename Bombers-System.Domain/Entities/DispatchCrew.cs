@@ -12,5 +12,5 @@ public partial class DispatchCrew
 
     public virtual OperationalDispatch Dispatch { get; set; } = null!;
 
-    public virtual FirefighterPersonnel Firefighter { get; set; } = null!;
+    public virtual Firefighter Firefighter { get; set; } = null!;
 }

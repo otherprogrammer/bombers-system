@@ -19,7 +19,7 @@ internal sealed class CreateFirefighterCommandHandler : IRequestHandler<CreateFi
 
     public async Task<FirefighterDto> Handle(CreateFirefighterCommand request, CancellationToken cancellationToken)
     {
-        var firefighter = new FirefighterPersonnel
+        var firefighter = new Firefighter
         {
             FirefighterId = request.Dto.FirefighterId,
             StationId = request.Dto.StationId,

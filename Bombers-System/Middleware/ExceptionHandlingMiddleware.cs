@@ -1,5 +1,7 @@
 using System.Net;
+using System.Security.Authentication;
 using System.Text.Json;
+using Bombers_System.Domain.Exceptions;
 
 namespace Bombers_System.Middleware;
 
@@ -20,33 +22,26 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            _logger.LogError(ex, "Error no controlado: {Message}", ex.Message);
-            await HandleExceptionAsync(context, ex);
+            _logger.LogError(exception, "Unexpected error occurred: {Message}", exception.Message);
+
+            var (statusCode, message) = exception switch
+            {
+                ConflictException => (HttpStatusCode.Conflict, exception.Message),
+                NotFoundException => (HttpStatusCode.NotFound, exception.Message),
+                ArgumentException => (HttpStatusCode.BadRequest, exception.Message),
+                InvalidCredentialException => (HttpStatusCode.Unauthorized, exception.Message),
+                _ => (HttpStatusCode.InternalServerError, "An internal error occurred.")
+            };
+            
+            context.Response.StatusCode = (int)statusCode;
+            context.Response.ContentType = "application/json";
+            
+            var errorResponse = new { status = (int)statusCode, message = message };
+ 
+            var jsonResponse = JsonSerializer.Serialize(errorResponse);
+            await context.Response.WriteAsync(jsonResponse);
         }
-    }
-
-    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
-    {
-        context.Response.ContentType = "application/json";
-
-        var (statusCode, message) = exception switch
-        {
-            ArgumentNullException => (HttpStatusCode.BadRequest, "Datos inválidos en la solicitud."),
-            KeyNotFoundException => (HttpStatusCode.NotFound, "El recurso solicitado no existe."),
-            InvalidOperationException => (HttpStatusCode.Conflict, exception.Message),
-            _ => (HttpStatusCode.InternalServerError, "Ocurrió un error interno. Intente más tarde.")
-        };
-
-        context.Response.StatusCode = (int)statusCode;
-
-        var response = JsonSerializer.Serialize(new
-        {
-            status = (int)statusCode,
-            message
-        });
-
-        await context.Response.WriteAsync(response);
     }
 }

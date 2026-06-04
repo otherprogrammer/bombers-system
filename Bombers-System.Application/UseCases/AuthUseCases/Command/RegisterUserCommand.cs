@@ -29,7 +29,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
 
         if (request.FirefighterId != null)
         {
-            if (!await _unitOfWork.FirefighterPersonnel.ExistsByIdAsync(request.FirefighterId.Value, cancellationToken))
+            if (!await _unitOfWork.Firefighters.ExistsByIdAsync(request.FirefighterId.Value, cancellationToken))
             {
                 throw new NotFoundException($"Firefighter with ID {request.FirefighterId} does not exist.");
             }

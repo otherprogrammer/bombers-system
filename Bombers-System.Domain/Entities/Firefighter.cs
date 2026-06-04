@@ -1,6 +1,6 @@
 ﻿namespace Bombers_System.Domain.Entities;
 
-public partial class FirefighterPersonnel
+public partial class Firefighter
 {
     public int FirefighterId { get; set; }
 

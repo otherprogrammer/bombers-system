@@ -22,7 +22,7 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<DutyShift> DutyShifts { get; set; }
 
-    public virtual DbSet<FirefighterPersonnel> FirefighterPersonnel { get; set; }
+    public virtual DbSet<Firefighter> Firefighters { get; set; }
 
     public virtual DbSet<OperationalDispatch> OperationalDispatches { get; set; }
 
@@ -135,11 +135,11 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("fk_shifts_firefighter");
         });
 
-        modelBuilder.Entity<FirefighterPersonnel>(entity =>
+        modelBuilder.Entity<Firefighter>(entity =>
         {
             entity.HasKey(e => e.FirefighterId).HasName("firefighter_personnel_pkey");
 
-            entity.ToTable("firefighter_personnel");
+            entity.ToTable("firefighters");
 
             entity.Property(e => e.FirefighterId)
                 .UseIdentityAlwaysColumn()
@@ -159,7 +159,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("rank");
             entity.Property(e => e.StationId).HasColumnName("station_id");
 
-            entity.HasOne(d => d.Station).WithMany(p => p.FirefighterPersonnel)
+            entity.HasOne(d => d.Station).WithMany(p => p.Firefighters)
                 .HasForeignKey(d => d.StationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_firefighter_station");

@@ -14,5 +14,5 @@ public partial class DutyShift
 
     public string RolAssigned { get; set; } = null!;
 
-    public virtual FirefighterPersonnel Firefighter { get; set; } = null!;
+    public virtual Firefighter Firefighter { get; set; } = null!;
 }

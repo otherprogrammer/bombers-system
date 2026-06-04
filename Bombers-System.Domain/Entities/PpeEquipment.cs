@@ -14,5 +14,5 @@ public partial class PpeEquipment
 
     public string Type { get; set; } = null!;
 
-    public virtual FirefighterPersonnel Firefighter { get; set; } = null!;
+    public virtual Firefighter Firefighter { get; set; } = null!;
 }
