@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     public IRoleRepository Roles { get; }
     public IFirefighterRepository Firefighters { get; }
     public IUserTokenRepository UserTokens { get; }
+    public IUserRoleRepository UserRoles { get; }
     
     public UnitOfWork(ApplicationDbContext context,
         IStationRepository stationRepository,
@@ -19,7 +20,8 @@ public class UnitOfWork : IUnitOfWork
         IUserRepository userRepository,
         IRoleRepository roleRepository, 
         IFirefighterRepository firefighterRepository,
-        IUserTokenRepository userTokenRepository)
+        IUserTokenRepository userTokenRepository,
+        IUserRoleRepository userRoleRepository)
     {
         _context = context;
         Stations = stationRepository;
@@ -28,6 +30,7 @@ public class UnitOfWork : IUnitOfWork
         Roles = roleRepository;
         Firefighters = firefighterRepository;
         UserTokens = userTokenRepository;
+        UserRoles = userRoleRepository;
     }
     
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

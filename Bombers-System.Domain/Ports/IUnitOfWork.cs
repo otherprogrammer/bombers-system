@@ -8,5 +8,6 @@ public interface IUnitOfWork
     IRoleRepository Roles { get; }
     IFirefighterRepository Firefighters { get; }
     IUserTokenRepository UserTokens { get; }
+    IUserRoleRepository UserRoles { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -25,7 +25,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
     {
         if (await _unitOfWork.Users.ExistsByUsernameAsync(request.Username, cancellationToken))
         {
-            throw new ConflictException("Username already exists");
+            throw new ConflictException("Username already exists.");
         }
 
         if (request.FirefighterId != null)
