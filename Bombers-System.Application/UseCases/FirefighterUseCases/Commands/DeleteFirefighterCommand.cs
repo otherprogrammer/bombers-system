@@ -20,7 +20,7 @@ internal sealed class DeleteFirefighterCommandHandler : IRequestHandler<DeleteFi
         var firefighter = await _unitOfWork.Firefighters.GetByIdAsync(request.FirefighterId, cancellationToken);
         if (firefighter is null) return false;
 
-        await _unitOfWork.Firefighters.DeleteAsync(firefighter);
+        _unitOfWork.Firefighters.Delete(firefighter);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }

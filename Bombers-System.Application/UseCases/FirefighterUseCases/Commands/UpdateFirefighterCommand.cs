@@ -28,7 +28,7 @@ internal sealed class UpdateFirefighterCommandHandler : IRequestHandler<UpdateFi
         firefighter.Rank = request.Dto.Rank;
         firefighter.CurrentStatus = request.Dto.CurrentStatus;
 
-        await _unitOfWork.Firefighters.UpdateAsync(firefighter);
+        _unitOfWork.Firefighters.Update(firefighter);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new FirefighterDto
