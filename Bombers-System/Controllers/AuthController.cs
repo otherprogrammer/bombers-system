@@ -1,4 +1,5 @@
 ﻿using Bombers_System.Application.UseCases.AuthUseCases.Commands;
+using Bombers_System.Application.UseCases.AuthUseCases.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,5 +45,18 @@ public class AuthController : ControllerBase
     {
         await _mediator.Send(command, cancellationToken);
         return NoContent();
+    }
+    
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<IActionResult> GetMe(CancellationToken cancellationToken)
+    {
+        var claim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+        if (claim == null) return Unauthorized();
+        
+        var userId = int.Parse(claim.Value);
+        
+        return Ok(await _mediator.Send(new GetCurrentUserQuery(userId), cancellationToken));
     }
 }
