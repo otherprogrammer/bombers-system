@@ -1,0 +1,8 @@
+﻿namespace Bombers_System.Domain.DTOs.Role;
+
+public class RoleDto
+{
+    public int RoleId { get; set; }
+
+    public string RoleName { get; set; } = null!;
+}
