@@ -3,24 +3,24 @@ using Bombers_System.Domain.Exceptions;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
-namespace Bombers_System.Application.UseCases.AuthUseCases.Commands;
+namespace Bombers_System.Application.UseCases.UserUseCases.Commands;
 
-public record RegisterUserCommand(string Username, string Password, int? FirefighterId) : IRequest<RegisterUserResponse>;
+public record CreateUserCommand(string Username, string Password, int? FirefighterId) : IRequest<CreateUserCommandResponse>;
 
-public record RegisterUserResponse(int UserId, string Username, int? FirefighterId);
+public record CreateUserCommandResponse(int UserId, string Username, int? FirefighterId);
 
-internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserResponse>
+internal sealed class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPasswordHasher _passwordHasher;
     
-    public RegisterUserCommandHandler(IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
+    public CreateUserCommandHandler(IUnitOfWork unitOfWork,  IPasswordHasher passwordHasher)
     {
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<RegisterUserResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<CreateUserCommandResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         if (await _unitOfWork.Users.ExistsByUsernameAsync(request.Username, cancellationToken))
         {
@@ -29,7 +29,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
 
         if (request.FirefighterId != null)
         {
-            if (!await _unitOfWork.Firefighters.ExistsByIdAsync(request.FirefighterId.Value!, cancellationToken))
+            if (!await _unitOfWork.Firefighters.ExistsByIdAsync(request.FirefighterId.Value, cancellationToken))
             {
                 throw new NotFoundException("Firefighter does not exist.");
             }
@@ -53,6 +53,9 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         await _unitOfWork.Users.AssignRoleAsync(newUser, 3);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RegisterUserResponse(newUser.UserId, newUser.Username,  newUser.FirefighterId);
+        return new CreateUserCommandResponse(
+            newUser.UserId, 
+            newUser.Username, 
+            newUser.FirefighterId);
     }
 }

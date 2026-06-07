@@ -5,10 +5,10 @@ using MediatR;
 
 namespace Bombers_System.Application.UseCases.AuthUseCases.Commands;
 
+public record RefreshTokenCommand(string RefreshToken) : IRequest<RefreshTokenResponse>;
+
 public record RefreshTokenResponse(string AccessToken, string RefreshToken);
 
-public record RefreshTokenCommand(string RefreshToken) : IRequest<RefreshTokenResponse>;
-    
 internal sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
 {
     private readonly IUnitOfWork _unitOfWork;

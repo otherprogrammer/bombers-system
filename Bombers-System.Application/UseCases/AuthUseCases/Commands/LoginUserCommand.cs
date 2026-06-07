@@ -5,11 +5,11 @@ using MediatR;
 
 namespace Bombers_System.Application.UseCases.AuthUseCases.Commands;
 
-public record LoginResponse(string AccessToken, string RefreshToken);
+public record LoginUserCommand(string Username, string Password) : IRequest<LoginUserResponse>;
 
-public record LoginUserCommand(string Username, string Password) : IRequest<LoginResponse>;
+public record LoginUserResponse(string AccessToken, string RefreshToken);
 
-internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginResponse>
+internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtProvider _jwtProvider;
@@ -22,7 +22,7 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
         _passwordHasher = passwordHasher;
     }
 
-    public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetByUsernameAsync(request.Username, cancellationToken);
         if (user == null) throw new InvalidCredentialException("Invalid username or password.");
@@ -50,6 +50,6 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
         await _unitOfWork.UserTokens.AddAsync(userToken, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
-        return new LoginResponse(accessToken, refreshToken);
+        return new LoginUserResponse(accessToken, refreshToken);
     }
 }

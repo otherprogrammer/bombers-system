@@ -1,6 +1,7 @@
 ﻿using Bombers_System.Domain.Entities;
 using Bombers_System.Domain.Ports;
 using Bombers_System.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bombers_System.Infrastructure.Adapters;
 
@@ -11,5 +12,11 @@ public class RoleRepository : GenericRepository<Role>, IRoleRepository
     public RoleRepository(ApplicationDbContext context) : base(context)
     {
         _context = context;
+    }
+    
+    public async Task<bool> ExistsByRoleNameAsync(string rolename, CancellationToken cancellationToken = default)
+    {
+        return await _context.Roles
+            .AnyAsync(r => r.RoleName == rolename, cancellationToken);
     }
 }

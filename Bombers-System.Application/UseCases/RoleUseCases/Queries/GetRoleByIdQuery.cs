@@ -22,7 +22,7 @@ internal sealed class GetRoleByIdQueryHandler : IRequestHandler<GetRoleByIdQuery
 
         if (role == null)
         {
-            throw new NotFoundException($"Role with ID {request.RoleId} does not exist.");
+            throw new NotFoundException("Role does not exist.");
         }
 
         return new RoleDto()

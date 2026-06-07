@@ -1,13 +1,15 @@
-﻿using Bombers_System.Domain.DTOs.Role;
-using Bombers_System.Domain.Entities;
+﻿using Bombers_System.Domain.Entities;
+using Bombers_System.Domain.Exceptions;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
 namespace Bombers_System.Application.UseCases.RoleUseCases.Commands;
 
-public record CreateRoleCommand(string RoleName) : IRequest<RoleDto>;
+public record CreateRoleCommand(string RoleName) : IRequest<CreateRoleResponse>;
 
-internal sealed class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, RoleDto>
+public record CreateRoleResponse(int RoleId, string RoleName);
+
+internal sealed class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, CreateRoleResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     
@@ -16,8 +18,13 @@ internal sealed class CreateRoleCommandHandler : IRequestHandler<CreateRoleComma
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RoleDto> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
+    public async Task<CreateRoleResponse> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
+        if (await _unitOfWork.Roles.ExistsByRoleNameAsync(request.RoleName, cancellationToken))
+        {
+            throw new ConflictException("Role already exists.");
+        }
+        
         var role = new Role()
         {
             RoleName = request.RoleName
@@ -26,10 +33,8 @@ internal sealed class CreateRoleCommandHandler : IRequestHandler<CreateRoleComma
         await _unitOfWork.Roles.AddAsync(role,cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RoleDto()
-        {
-            RoleId = role.RoleId,
-            RoleName = role.RoleName
-        };
+        return new CreateRoleResponse(
+            role.RoleId, 
+            role.RoleName);
     }
 }

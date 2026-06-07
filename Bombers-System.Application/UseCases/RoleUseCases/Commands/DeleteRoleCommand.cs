@@ -21,7 +21,7 @@ internal sealed class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleComma
 
         if (role == null)
         {
-            throw new NotFoundException($"Role with ID {request.RoleId} does not exist.");
+            throw new NotFoundException("Role does not exist.");
         }
 
         _unitOfWork.Roles.Delete(role);

@@ -5,9 +5,11 @@ using MediatR;
 
 namespace Bombers_System.Application.UseCases.RoleUseCases.Commands;
 
-public record UpdateRoleCommand(int RoleId, string RoleName) : IRequest<RoleDto>;
+public record UpdateRoleCommand(int RoleId, string RoleName) : IRequest<UpdateRoleResponse>;
 
-internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, RoleDto>
+public record UpdateRoleResponse(int RoleId, string RoleName);
+
+internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, UpdateRoleResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     
@@ -16,13 +18,21 @@ internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleComma
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<RoleDto> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
+    public async Task<UpdateRoleResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
     {
         var role = await _unitOfWork.Roles.GetByIdAsync(request.RoleId, cancellationToken);
 
         if (role == null)
         {
-            throw new NotFoundException($"Role with ID {request.RoleId} does not exist.");
+            throw new NotFoundException("Role does not exist.");
+        }
+
+        if (request.RoleName != role.RoleName)
+        {
+            if (await _unitOfWork.Roles.ExistsByRoleNameAsync(request.RoleName, cancellationToken))
+            {
+                throw new ConflictException("Role already exists.");
+            }
         }
         
         role.RoleName = request.RoleName;
@@ -30,10 +40,8 @@ internal sealed class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleComma
         _unitOfWork.Roles.Update(role);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RoleDto()
-        {
-            RoleId = role.RoleId,
-            RoleName = role.RoleName
-        };
+        return new UpdateRoleResponse(
+            role.RoleId, 
+            role.RoleName);
     }
 }

@@ -3,32 +3,32 @@ using Bombers_System.Domain.Exceptions;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
-namespace Bombers_System.Application.UseCases.AuthUseCases.Queries;
+namespace Bombers_System.Application.UseCases.UserUseCases.Queries;
 
-public record GetCurrentUserQuery (int UserId) : IRequest<UserDto>;
+public record GetUserByIdQuery(int UserId) : IRequest<UserDto>;
 
-internal sealed class GetCurrentUserQueryHandler : IRequestHandler<GetCurrentUserQuery, UserDto>
+internal sealed class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     
-    public  GetCurrentUserQueryHandler(IUnitOfWork unitOfWork)
+    public GetUserByIdQueryHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<UserDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetByIdAsync(request.UserId, cancellationToken);
 
         if (user == null)
         {
-            throw new NotFoundException("Session is no longer valid.");
+            throw new NotFoundException("User does not exist.");
         }
 
         return new UserDto()
         {
-            Username = user.Username,
             UserId = user.UserId,
+            Username =  user.Username,
             FirefighterId =  user.FirefighterId,
         };
     }
