@@ -1,8 +1,8 @@
+using Bombers_System.Application.DTOs.Incident;
 using MediatR;
-using Bombers_System.Domain.Entities;
 
 namespace Bombers_System.Application.UseCases.IncidentUseCases.Queries;
 
-public partial class GetAllIncidentsQuery : IRequest<List<CadIncident>>
+public class GetAllIncidentsQuery : IRequest<List<IncidentDto>>
 {
 }

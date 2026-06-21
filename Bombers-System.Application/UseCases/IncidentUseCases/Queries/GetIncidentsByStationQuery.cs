@@ -1,9 +1,9 @@
 using MediatR;
-using Bombers_System.Domain.Entities;
+using Bombers_System.Application.DTOs.Incident;
 
 namespace Bombers_System.Application.UseCases.IncidentUseCases.Queries;
 
-public class GetIncidentsByStationQuery : IRequest<List<CadIncident>>
+public class GetIncidentByIdQuery : IRequest<IncidentDto>
 {
-    public int StationId { get; set; }
+    public int IncidentId { get; set; }
 }
