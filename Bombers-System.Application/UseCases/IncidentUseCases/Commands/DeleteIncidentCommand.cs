@@ -1,8 +1,8 @@
 using MediatR;
-using Bombers_System.Domain.Entities;
 
-namespace Bombers_System.Application.UseCases.IncidentUseCases.Queries;
+namespace Bombers_System.Application.UseCases.IncidentUseCases.Commands;
 
-public partial class GetAllIncidentsQuery : IRequest<List<CadIncident>>
+public class DeleteIncidentCommand : IRequest<bool>
 {
+    public int IncidentId { get; set; }
 }
