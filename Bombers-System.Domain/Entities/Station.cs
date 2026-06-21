@@ -14,7 +14,7 @@ public partial class Station
 
     public int VehicleCapacity { get; set; }
 
-    public virtual ICollection<FirefighterPersonnel> FirefighterPersonnel { get; set; } = new List<FirefighterPersonnel>();
+    public virtual ICollection<Firefighter> Firefighters { get; set; } = new List<Firefighter>();
 
     public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 }

@@ -15,8 +15,8 @@ public static class InfrastructureServiceExtensions
         // Database Connection
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+            options.UseNpgsql(
+                configuration.GetConnectionString("DefaultConnection"),
                 x => x.UseNetTopologySuite());
         });
         
@@ -24,6 +24,14 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IStationRepository, StationRepository>();
         services.AddScoped<IVehicleRepository, VehicleRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IFirefighterRepository, FirefighterRepository>();
+        services.AddScoped<IUserTokenRepository, UserTokenRepository>();
+        services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+        
+        services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+        services.AddSingleton<IJwtProvider, JwtProvider>();
         
         return services;
     }

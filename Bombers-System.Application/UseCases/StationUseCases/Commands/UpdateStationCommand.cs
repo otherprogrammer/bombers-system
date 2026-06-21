@@ -29,7 +29,7 @@ internal sealed class UpdateStationCommandHandler : IRequestHandler<UpdateStatio
         station.Address = request.Dto.Address;
         station.VehicleCapacity = request.Dto.VehicleCapacity;
 
-        await _unitOfWork.Stations.UpdateAsync(station);
+        _unitOfWork.Stations.Update(station);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new StationDto

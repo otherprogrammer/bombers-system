@@ -23,7 +23,7 @@ internal sealed class DeleteStationCommandHandler : IRequestHandler<DeleteStatio
         var station = await _unitOfWork.Stations.GetByIdAsync(request.StationId, cancellationToken);
         if (station is null) return false;
 
-        await _unitOfWork.Stations.DeleteAsync(station);
+        _unitOfWork.Stations.Delete(station);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }

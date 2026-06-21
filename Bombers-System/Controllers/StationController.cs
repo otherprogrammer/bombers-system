@@ -1,5 +1,6 @@
 using Bombers_System.Application.UseCases.StationUseCases.Commands;
 using Bombers_System.Application.UseCases.StationUseCases.Queries;
+using Bombers_System.Application.UseCases.VehicleUseCases.Queries;
 using Bombers_System.Domain.DTOs.Station;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,11 @@ namespace Bombers_System.Controllers;
 
 [ApiController]
 [Route("api/stations")]
-public class StationsController : ControllerBase
+public class StationController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public StationsController(IMediator mediator)
+    public StationController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -28,13 +29,21 @@ public class StationsController : ControllerBase
     public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetStationByIdQuery(id), cancellationToken);
-        if (result is null) return NotFound();
+        if (result is null) return NotFound(new { message = $"Estación con ID {id} no encontrada." });
+        return Ok(result);
+    }
+
+    [HttpGet("{id:int}/vehicles")]
+    public async Task<IActionResult> GetVehiclesByStation([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetVehiclesByStationQuery(id), cancellationToken);
         return Ok(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateStationDto dto, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var result = await _mediator.Send(new CreateStationCommand(dto), cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.StationId }, result);
     }
@@ -42,8 +51,9 @@ public class StationsController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStationDto dto, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var result = await _mediator.Send(new UpdateStationCommand(id, dto), cancellationToken);
-        if (result is null) return NotFound();
+        if (result is null) return NotFound(new { message = $"Estación con ID {id} no encontrada." });
         return Ok(result);
     }
 
@@ -51,7 +61,7 @@ public class StationsController : ControllerBase
     public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
     {
         var deleted = await _mediator.Send(new DeleteStationCommand(id), cancellationToken);
-        if (!deleted) return NotFound();
+        if (!deleted) return NotFound(new { message = $"Estación con ID {id} no encontrada." });
         return NoContent();
     }
 }

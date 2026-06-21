@@ -23,7 +23,7 @@ internal sealed class DeleteVehicleCommandHandler : IRequestHandler<DeleteVehicl
         var vehicle = await _unitOfWork.Vehicles.GetByIdAsync(request.VehicleId, cancellationToken);
         if (vehicle is null) return false;
 
-        await _unitOfWork.Vehicles.DeleteAsync(vehicle);
+        _unitOfWork.Vehicles.Delete(vehicle);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return true;
     }

@@ -8,18 +8,27 @@ namespace Bombers_System.Controllers;
 
 [ApiController]
 [Route("api/vehicles")]
-public class VehiclesController : ControllerBase
+public class VehicleController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public VehiclesController(IMediator mediator)
+    public VehicleController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll(
+        [FromQuery] string? type,
+        [FromQuery] string? status,
+        CancellationToken cancellationToken)
     {
+        if (!string.IsNullOrWhiteSpace(type) || !string.IsNullOrWhiteSpace(status))
+        {
+            var filtered = await _mediator.Send(new GetVehiclesFilteredQuery(type, status), cancellationToken);
+            return Ok(filtered);
+        }
+
         var result = await _mediator.Send(new GetAllVehiclesQuery(), cancellationToken);
         return Ok(result);
     }
@@ -28,7 +37,7 @@ public class VehiclesController : ControllerBase
     public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetVehicleByIdQuery(id), cancellationToken);
-        if (result is null) return NotFound();
+        if (result is null) return NotFound(new { message = $"Vehículo con ID {id} no encontrado." });
         return Ok(result);
     }
 
@@ -42,6 +51,7 @@ public class VehiclesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateVehicleDto dto, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var result = await _mediator.Send(new CreateVehicleCommand(dto), cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.VehicleId }, result);
     }
@@ -49,8 +59,9 @@ public class VehiclesController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateVehicleDto dto, CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
         var result = await _mediator.Send(new UpdateVehicleCommand(id, dto), cancellationToken);
-        if (result is null) return NotFound();
+        if (result is null) return NotFound(new { message = $"Vehículo con ID {id} no encontrado." });
         return Ok(result);
     }
 
@@ -58,7 +69,7 @@ public class VehiclesController : ControllerBase
     public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
     {
         var deleted = await _mediator.Send(new DeleteVehicleCommand(id), cancellationToken);
-        if (!deleted) return NotFound();
+        if (!deleted) return NotFound(new { message = $"Vehículo con ID {id} no encontrado." });
         return NoContent();
     }
 }

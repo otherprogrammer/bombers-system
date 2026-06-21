@@ -32,7 +32,7 @@ internal sealed class UpdateVehicleCommandHandler : IRequestHandler<UpdateVehicl
         vehicle.VehicleType = request.Dto.VehicleType;
         vehicle.OperationalStatus = request.Dto.OperationalStatus;
 
-        await _unitOfWork.Vehicles.UpdateAsync(vehicle);
+        _unitOfWork.Vehicles.Update(vehicle);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new VehicleDto

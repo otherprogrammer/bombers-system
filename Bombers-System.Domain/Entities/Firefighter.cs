@@ -1,6 +1,6 @@
 ﻿namespace Bombers_System.Domain.Entities;
 
-public partial class FirefighterPersonnel
+public partial class Firefighter
 {
     public int FirefighterId { get; set; }
 
@@ -25,4 +25,6 @@ public partial class FirefighterPersonnel
     public virtual ICollection<PpeEquipment> PpeEquipments { get; set; } = new List<PpeEquipment>();
 
     public virtual Station Station { get; set; } = null!;
+
+    public virtual User? User { get; set; }
 }

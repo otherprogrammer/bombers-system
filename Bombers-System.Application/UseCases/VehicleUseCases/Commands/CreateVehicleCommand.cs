@@ -7,7 +7,7 @@ namespace Bombers_System.Application.UseCases.VehicleUseCases.Commands;
 
 public class CreateVehicleCommand : IRequest<VehicleDto>
 {
-    public CreateVehicleDto Dto { get; set; } = null!;
+    public CreateVehicleDto Dto { get; set; }
     public CreateVehicleCommand(CreateVehicleDto dto) => Dto = dto;
 }
 
@@ -24,7 +24,6 @@ internal sealed class CreateVehicleCommandHandler : IRequestHandler<CreateVehicl
     {
         var vehicle = new Vehicle
         {
-            VehicleId = request.Dto.VehicleId,
             StationId = request.Dto.StationId,
             WaterLevelGallons = request.Dto.WaterLevelGallons,
             LastMaintenanceDate = request.Dto.LastMaintenanceDate,
