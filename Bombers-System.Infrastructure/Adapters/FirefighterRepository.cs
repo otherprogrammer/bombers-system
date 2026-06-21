@@ -24,6 +24,6 @@ public class FirefighterRepository : GenericRepository<Firefighter>, IFirefighte
     public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Firefighters
-            .AnyAsync(fp => fp.FirefighterId == id, cancellationToken);
+            .AnyAsync(f => f.FirefighterId == id, cancellationToken);
     }
 }

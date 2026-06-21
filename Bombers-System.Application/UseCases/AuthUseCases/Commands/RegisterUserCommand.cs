@@ -48,9 +48,16 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
             PasswordHash = passwordHash,
             FirefighterId = request.FirefighterId
         };
+
+        var userRole = new UserRole()
+        {
+            User = newUser,
+            RoleId = 3,
+            AssignedAt = DateTime.UtcNow
+        };
         
         await _unitOfWork.Users.AddAsync(newUser, cancellationToken);
-        await _unitOfWork.Users.AssignRoleAsync(newUser, 3);
+        await _unitOfWork.UserRoles.AddAsync(userRole, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new RegisterUserResponse(newUser.UserId, newUser.Username,  newUser.FirefighterId);

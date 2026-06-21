@@ -22,4 +22,34 @@ public class UserRoleRepository : GenericRepository<UserRole>, IUserRoleReposito
             .Select(ur => ur.Role.RoleName)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<Role>> GetRolesByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+    {
+        return await _context.UserRoles
+            .AsNoTracking()
+            .Where(ur => ur.UserId == userId)
+            .Select(ur => ur.Role)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<UserRole?> GetByIdsAsync(int userId, int roleId, CancellationToken cancellationToken = default)
+    {
+        return await _context.UserRoles
+            .FindAsync(new object[] { userId, roleId }, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByIdsAsync(int userId, int roleId, CancellationToken cancellationToken = default)
+    {
+        return await _context.UserRoles
+            .AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId, cancellationToken);
+    }
+
+    public async Task<IEnumerable<User>> GetUsersByRoleIdAsync(int roleId, CancellationToken cancellationToken = default)
+    {
+        return await _context.UserRoles
+            .AsNoTracking()
+            .Where(ur => ur.RoleId == roleId)
+            .Select(ur => ur.User)
+            .ToListAsync(cancellationToken);
+    }
 }

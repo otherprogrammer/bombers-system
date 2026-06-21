@@ -7,5 +7,6 @@ public interface IUserRepository : IGenericRepository<User>
     Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default);
     Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default);
     Task<bool> ExistsByFirefighterIdAsync(int id, CancellationToken cancellationToken = default);
-    Task AssignRoleAsync(User user, int roleId);
+    Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<User>> GetWithFirefighterAsync(CancellationToken cancellationToken = default);
 }

@@ -35,14 +35,18 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await _context.Users
             .AnyAsync(u => u.FirefighterId == id, cancellationToken);
     }
-
-    public Task AssignRoleAsync(User user, int roleId)
+    
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        user.UserRoles.Add(new UserRole
-        {
-            RoleId = roleId,
-            AssignedAt =  DateTime.UtcNow
-        });
-        return Task.CompletedTask;
+        return await _context.Users
+            .AnyAsync(u => u.UserId == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<User>> GetWithFirefighterAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Users
+            .Include(u => u.Firefighter)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 }

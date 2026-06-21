@@ -19,4 +19,10 @@ public class RoleRepository : GenericRepository<Role>, IRoleRepository
         return await _context.Roles
             .AnyAsync(r => r.RoleName == rolename, cancellationToken);
     }
+    
+    public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Roles
+            .AnyAsync(r => r.RoleId == id, cancellationToken);
+    }
 }
