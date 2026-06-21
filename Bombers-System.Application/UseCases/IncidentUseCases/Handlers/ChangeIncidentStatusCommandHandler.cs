@@ -39,7 +39,7 @@ public class ChangeIncidentStatusCommandHandler : IRequestHandler<ChangeIncident
         // 🔥 Si se cierra el incidente, registrar hora de cierre
         if (request.Dto.Status == "Cerrado")
         {
-            incident.IncidentClosureTime = DateTime.Now;
+            incident.IncidentClosureTime = DateTime.UtcNow;
         }
 
         // 💾 Guardar cambios
