@@ -1,9 +1,7 @@
 using MediatR;
-
-namespace Bombers_System.Application.UseCases.IncidentUseCases.Commands;
+using Bombers_System.Application.DTOs.Incident;
 
 public class ChangeIncidentStatusCommand : IRequest<bool>
 {
-    public int IncidentId { get; set; }
-    public string Status { get; set; }
+    public ChangeIncidentStatusDto Dto { get; set; }
 }
