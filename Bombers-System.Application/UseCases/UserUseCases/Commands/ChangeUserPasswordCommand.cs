@@ -8,7 +8,6 @@ public record ChangeUserPasswordCommand(int UserId, string Password) : IRequest<
 
 public record ChangeUserPasswordCommandResponse(int UserId, string Username, int? FirefighterId);
 
-
 internal sealed class ChangeUserPasswordCommandHandler : IRequestHandler<ChangeUserPasswordCommand, ChangeUserPasswordCommandResponse>
 {
     private readonly IUnitOfWork _unitOfWork;

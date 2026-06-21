@@ -1,5 +1,5 @@
-﻿using System.Security.Authentication;
-using Bombers_System.Domain.Entities;
+﻿using Bombers_System.Domain.Entities;
+using Bombers_System.Domain.Exceptions;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
@@ -25,10 +25,10 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
     public async Task<LoginUserResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetByUsernameAsync(request.Username, cancellationToken);
-        if (user == null) throw new InvalidCredentialException("Invalid username or password.");
+        if (user == null) throw new UnauthorizedException("Invalid username or password.");
 
         bool isPasswordValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
-        if (!isPasswordValid) throw new InvalidCredentialException("Invalid username or password.");
+        if (!isPasswordValid) throw new UnauthorizedException("Invalid username or password.");
         
         var roles = await _unitOfWork.UserRoles.GetRoleNamesByUserIdAsync(user.UserId, cancellationToken);
 

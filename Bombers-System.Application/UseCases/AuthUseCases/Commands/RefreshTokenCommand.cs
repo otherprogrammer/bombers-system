@@ -1,5 +1,5 @@
-﻿using System.Security.Authentication;
-using Bombers_System.Domain.Entities;
+﻿using Bombers_System.Domain.Entities;
+using Bombers_System.Domain.Exceptions;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
@@ -26,17 +26,17 @@ internal sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenC
 
         if (storedToken == null)
         {
-            throw new InvalidCredentialException("Invalid refresh token.");
+            throw new UnauthorizedException("Invalid refresh token.");
         }
 
         if (storedToken.ExpiresAt < DateTime.UtcNow)
         {
-            throw new InvalidCredentialException("Refresh token has expired.");
+            throw new UnauthorizedException("Refresh token has expired.");
         }
 
         if (storedToken.IsRevoked)
         {
-            throw new InvalidCredentialException("Refresh token has been revoked.");
+            throw new UnauthorizedException("Refresh token has been revoked.");
         }
 
         storedToken.IsRevoked = true;

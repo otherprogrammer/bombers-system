@@ -28,10 +28,10 @@ public class ExceptionHandlingMiddleware
 
             var (statusCode, message) = exception switch
             {
-                ConflictException => (HttpStatusCode.Conflict, exception.Message),
+                BadRequestException => (HttpStatusCode.BadRequest, exception.Message),
+                UnauthorizedException => (HttpStatusCode.Unauthorized, exception.Message),
                 NotFoundException => (HttpStatusCode.NotFound, exception.Message),
-                ArgumentException => (HttpStatusCode.BadRequest, exception.Message),
-                InvalidCredentialException => (HttpStatusCode.Unauthorized, exception.Message),
+                ConflictException => (HttpStatusCode.Conflict, exception.Message),
                 _ => (HttpStatusCode.InternalServerError, "An internal error occurred.")
             };
             

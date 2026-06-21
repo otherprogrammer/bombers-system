@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Bombers_System.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Bombers_System.Domain.Entities;
 
 namespace Bombers_System.Infrastructure.Persistence;
 
@@ -41,7 +39,11 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<UserToken> UserTokens { get; set; }
 
     public virtual DbSet<Vehicle> Vehicles { get; set; }
-    
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=aws-1-us-east-1.pooler.supabase.com;Database=postgres;Username=postgres.layhndjrqrhzzbzrobif;Password=t7f3a4KlKGR2bvQV;Port=5432;SSL Mode=Require;Trust Server Certificate=true;", x => x.UseNetTopologySuite());
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -82,6 +84,10 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("incident_code");
             entity.Property(e => e.PriorityLevel).HasColumnName("priority_level");
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasDefaultValueSql("'Reportado'::character varying")
+                .HasColumnName("status");
         });
 
         modelBuilder.Entity<DispatchCrew>(entity =>

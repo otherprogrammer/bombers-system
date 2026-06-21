@@ -23,7 +23,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterUserCommand command, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(command, cancellationToken);
-        return Created(string.Empty, response);
+        return CreatedAtAction(nameof(GetMe), new { }, response);
     }
         
     [HttpPost("login")]
@@ -51,12 +51,23 @@ public class AuthController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GetMe(CancellationToken cancellationToken)
     {
-        var claim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-
-        if (claim == null) return Unauthorized();
-        
-        var userId = int.Parse(claim.Value);
+        var userId = GetCurrentUserId();
         
         return Ok(await _mediator.Send(new GetCurrentUserQuery(userId), cancellationToken));
+    }
+    
+    [HttpPatch("me/password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangeMyPasswordCommand command, CancellationToken cancellationToken)
+    {
+        var userId = GetCurrentUserId();
+        await _mediator.Send(new ChangeMyPasswordCommand(userId, command.OldPassword, command.NewPassword), cancellationToken);
+        return NoContent();
+    }
+    
+    private int GetCurrentUserId()
+    {
+        var claim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        if (claim == null) throw new UnauthorizedAccessException();
+        return int.Parse(claim.Value);
     }
 }

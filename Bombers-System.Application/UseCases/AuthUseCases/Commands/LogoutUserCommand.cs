@@ -1,4 +1,4 @@
-﻿using System.Security.Authentication;
+﻿using Bombers_System.Domain.Exceptions;
 using Bombers_System.Domain.Ports;
 using MediatR;
 
@@ -21,17 +21,17 @@ internal sealed class LogoutUserCommandHandler : IRequestHandler<LogoutUserComma
 
         if (storedToken == null)
         {
-            throw new InvalidCredentialException("Invalid refresh token.");
+            throw new UnauthorizedException("Invalid refresh token.");
         }
 
         if (storedToken.IsRevoked)
         {
-            throw new InvalidCredentialException("Refresh token has already been revoked.");
+            throw new UnauthorizedException("Refresh token has already been revoked.");
         }
 
         if (storedToken.ExpiresAt < DateTime.UtcNow)
         {
-            throw new InvalidCredentialException("Refresh token has expired.");
+            throw new UnauthorizedException("Refresh token has expired.");
         }
         
         storedToken.IsRevoked = true;

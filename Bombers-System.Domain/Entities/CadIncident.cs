@@ -18,6 +18,8 @@ public partial class CadIncident
 
     public DateTime? IncidentClosureTime { get; set; }
 
+    public string Status { get; set; } = null!;
+
     public virtual ICollection<OperationalDispatch> OperationalDispatches { get; set; } = new List<OperationalDispatch>();
 
     public virtual ICollection<PostIncidentReport> PostIncidentReports { get; set; } = new List<PostIncidentReport>();
