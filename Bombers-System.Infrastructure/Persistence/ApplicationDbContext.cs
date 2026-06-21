@@ -60,7 +60,11 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.IncidentId).HasName("cad_incident_pkey");
 
             entity.ToTable("cad_incident");
-
+            
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasColumnName("status");
+            
             entity.Property(e => e.IncidentId)
                 .ValueGeneratedNever()
                 .HasColumnName("incident_id");
