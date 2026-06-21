@@ -4,5 +4,6 @@ public class CreateIncidentDto
 {
     public string EmergencyType { get; set; }
     public int PriorityLevel { get; set; }
-    public int DispatchId { get; set; }
+    public double  Latitude { get; set; }
+    public double  Longitude { get; set; }
 }
