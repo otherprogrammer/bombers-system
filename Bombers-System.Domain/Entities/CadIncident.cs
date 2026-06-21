@@ -4,7 +4,6 @@ namespace Bombers_System.Domain.Entities;
 
 public partial class CadIncident
 {
-    public string Status { get; set; } = "Reportado";
     public int IncidentId { get; set; }
 
     public string IncidentCode { get; set; } = null!;
@@ -13,7 +12,7 @@ public partial class CadIncident
 
     public int PriorityLevel { get; set; }
 
-    public Geometry GpsCoordinates { get; set; } = null!;
+    public Point GpsCoordinates { get; set; } = null!;
 
     public DateTime Call911Time { get; set; }
 
