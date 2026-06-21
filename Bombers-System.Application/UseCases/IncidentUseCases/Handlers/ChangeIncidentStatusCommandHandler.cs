@@ -16,19 +16,33 @@ public class ChangeIncidentStatusCommandHandler : IRequestHandler<ChangeIncident
 
     public async Task<bool> Handle(ChangeIncidentStatusCommand request, CancellationToken cancellationToken)
     {
+        // 🔴 Validar DTO
+        if (request.Dto == null)
+            return false;
+
+        // 🟡 Validar estados permitidos
+        var validStatuses = new[] { "Reportado", "EnAtencion", "Cerrado" };
+
+        if (!validStatuses.Contains(request.Dto.Status))
+            return false;
+
+        // 🔵 Buscar incidente
         var incident = await _context.CadIncidents
-            .FirstOrDefaultAsync(x => x.IncidentId == request.IncidentId);
+            .FirstOrDefaultAsync(x => x.IncidentId == request.Dto.IncidentId, cancellationToken);
 
         if (incident == null)
             return false;
 
-        incident.IncidentCode = request.Status; // o mejor: crear campo Status si existe
+        // 🟢 Cambiar estado
+        incident.Status = request.Dto.Status;
 
-        if (request.Status == "Cerrado")
+        // 🔥 Si se cierra el incidente, registrar hora de cierre
+        if (request.Dto.Status == "Cerrado")
         {
             incident.IncidentClosureTime = DateTime.Now;
         }
 
+        // 💾 Guardar cambios
         await _context.SaveChangesAsync(cancellationToken);
 
         return true;

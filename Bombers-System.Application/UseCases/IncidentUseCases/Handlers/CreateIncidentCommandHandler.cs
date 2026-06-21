@@ -16,12 +16,16 @@ public class CreateIncidentCommandHandler : IRequestHandler<CreateIncidentComman
 
     public async Task<int> Handle(CreateIncidentCommand request, CancellationToken cancellationToken)
     {
+        if (request.Dto == null)
+            throw new ArgumentNullException(nameof(request.Dto));
+
         var incident = new CadIncident
         {
-            EmergencyType = request.EmergencyType,
-            PriorityLevel = request.PriorityLevel,
-            DispatchId = request.DispatchId,
-            Call911Time = DateTime.Now
+            EmergencyType = request.Dto.EmergencyType,
+            PriorityLevel = request.Dto.PriorityLevel,
+            DispatchId = request.Dto.DispatchId,
+            Call911Time = DateTime.Now,
+            Status = "Reportado"
         };
 
         _context.CadIncidents.Add(incident);

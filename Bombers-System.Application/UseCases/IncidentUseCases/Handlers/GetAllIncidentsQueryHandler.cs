@@ -1,12 +1,12 @@
+using Bombers_System.Application.DTOs.Incident;
 using Bombers_System.Application.UseCases.IncidentUseCases.Queries;
+using Bombers_System.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Bombers_System.Infrastructure.Persistence;
-using Bombers_System.Domain.Entities;
 
 namespace Bombers_System.Application.UseCases.IncidentUseCases.Handlers;
 
-public class GetAllIncidentsQueryHandler : IRequestHandler<GetAllIncidentsQuery, List<CadIncident>>
+public class GetAllIncidentsQueryHandler : IRequestHandler<GetAllIncidentsQuery, List<IncidentDto>>
 {
     private readonly ApplicationDbContext _context;
 
@@ -15,8 +15,17 @@ public class GetAllIncidentsQueryHandler : IRequestHandler<GetAllIncidentsQuery,
         _context = context;
     }
 
-    public async Task<List<CadIncident>> Handle(GetAllIncidentsQuery request, CancellationToken cancellationToken)
+    public async Task<List<IncidentDto>> Handle(GetAllIncidentsQuery request, CancellationToken cancellationToken)
     {
-        return await _context.CadIncidents.ToListAsync(cancellationToken);
+        return await _context.CadIncidents
+            .Select(i => new IncidentDto
+            {
+                IncidentId = i.IncidentId,
+                IncidentCode = i.IncidentCode,
+                EmergencyType = i.EmergencyType,
+                PriorityLevel = i.PriorityLevel,
+                Status = i.Status
+            })
+            .ToListAsync(cancellationToken);
     }
 }
