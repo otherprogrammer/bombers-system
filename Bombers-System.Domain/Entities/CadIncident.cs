@@ -4,6 +4,7 @@ namespace Bombers_System.Domain.Entities;
 
 public partial class CadIncident
 {
+    public string Status { get; set; } = "Reportado";
     public int IncidentId { get; set; }
 
     public int DispatchId { get; set; }
