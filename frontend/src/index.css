@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #b70011;
+  --color-primary-container: #dc2626;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #fff6f5;
+
+  --color-secondary: #565e74;
+  --color-secondary-container: #dae2fd;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #5c647a;
+
+  --color-tertiary: #005e8d;
+  --color-tertiary-container: #0078b2;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #f3f8ff;
+
+  --color-background: #fff8f7;
+  --color-on-background: #281715;
+
+  --color-surface: #fff8f7;
+  --color-surface-dim: #f3d3cf;
+  --color-surface-bright: #fff8f7;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #fff0ee;
+  --color-surface-container: #ffe9e6;
+  --color-surface-container-high: #ffe2de;
+  --color-surface-container-highest: #fbdbd7;
+  --color-on-surface: #281715;
+  --color-on-surface-variant: #5c403c;
+
+  --color-outline: #916f6b;
+  --color-outline-variant: #e6bdb8;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  margin: 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 10px;
+}

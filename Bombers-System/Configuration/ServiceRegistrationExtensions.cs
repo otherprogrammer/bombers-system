@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Bombers_System.Application.Configuration;
 using Bombers_System.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,7 +20,23 @@ public static class ServiceRegistrationExtensions
         
         // Enable Controllers
         services.AddControllers();
-        
+
+        // Allow the frontend (Vite dev server / Vercel deployment) to call this API
+        // from a different origin. Origins are configurable via appsettings so
+        // Development and Production can point at different frontend URLs.
+        services.AddCors(options =>
+        {
+            options.AddPolicy("FrontendPolicy", policy =>
+            {
+                var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+                    ?? new[] { "http://localhost:5173" };
+
+                policy.WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
         // Add Authentication Services
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
